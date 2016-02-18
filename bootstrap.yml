@@ -1,0 +1,5 @@
+---
+ - hosts: targets
+   sudo: "{{ enable_sudo | default(true) }}"
+   roles: 
+    - "{{ roles }}"

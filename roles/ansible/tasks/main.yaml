@@ -1,0 +1,9 @@
+---
+ - name: Install ansible requirements
+   raw: /usr/bin/apt-get --yes --force-yes install python-dateutil python-apt python-pycurl
+
+ - name: Add ansible repository
+   apt_repository: repo='ppa:ansible/ansible' state=present update_cache=yes
+
+ - name: Install latest ansible version
+   apt: name=ansible state=latest update_cache=no

@@ -23,3 +23,5 @@ check_prerequirements
 sudo apt-get update
 sudo apt-get dist-upgrade --yes --force-yes
 sudo apt-get install ansible
+
+ansible-playbook -i inventory/localhost --extra-vars="roles=ansible" bootstrap.yml -K -vvvv
