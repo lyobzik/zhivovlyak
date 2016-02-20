@@ -1,0 +1,11 @@
+---
+ - name: Install common developer packages
+   apt: name={{item}} state=present update_cache=no
+   with_items:
+    - build-essential
+    - psmisc
+    - git
+    - git-gui
+    - gitk
+    - gitg
+
