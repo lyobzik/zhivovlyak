@@ -29,3 +29,4 @@ ansible-playbook -i inventory/localhost --extra-vars="roles=common" bootstrap.ym
 ansible-playbook -i inventory/localhost --extra-vars="roles=dev" bootstrap.yml -K -vvvv $@
 
 ansible-playbook -i inventory/localhost --extra-vars="roles=git" --extra-vars="enable_sudo=false" git.yml -K -vvvv $@
+ansible-playbook -i inventory/localhost --extra-vars="roles=zsh" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@

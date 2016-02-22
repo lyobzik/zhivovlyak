@@ -1,0 +1,60 @@
+---
+ - name: Install zsh package
+   sudo: true
+   apt: name={{item}} state=present update_cache=yes
+   with_items:
+    - zsh
+
+ - name: Install oh-my-zsh prerequirements
+   sudo: true
+   apt: name={{item}} state=present update_cache=yes
+   with_items:
+    - git
+    - python-pip
+    - fontconfig
+
+ - name: Download oh-my-zsh installer
+   get_url:
+      url=https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh
+      dest=/tmp/oh-my-zsh-installer.sh mode=a+rwx
+
+ - name: Disable changing shell from installer
+   lineinfile: dest=/tmp/oh-my-zsh-installer.sh state=present
+      regexp='TEST_CURRENT_SHELL=\$\(expr' line='TEST_CURRENT_SHELL="zsh"'
+
+ - name: Run oh-my-zsh installer
+   script: /tmp/oh-my-zsh-installer.sh creates=/home/{{ ansible_user_id }}/.oh-my-zsh
+
+ - name: Change user shell
+   sudo: true
+   user: name={{ ansible_user_id }} shell=/usr/bin/zsh
+
+ - name: Install Powerline
+   shell: pip install --user git+git://github.com/Lokaltog/powerline
+   args:
+      executable: /bin/zsh
+
+ - name: Create Powerline font's directories
+   file: path={{ item }} state=directory
+   with_items:
+    - /home/{{ ansible_user_id }}/.local/share/fonts
+    - /home/{{ ansible_user_id }}/.config/fontconfig/fonts.conf/
+
+ - name: Download Powerline symbols
+   get_url:
+      url: https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
+      dest: /home/{{ ansible_user_id }}/.local/share/fonts/PowerlineSymbols.otf
+
+ - name: Update system's font cache
+   shell: fc-cache -fv /home/{{ ansible_user_id }}/.local/share/fonts
+   args:
+      executable: /bin/zsh
+
+ - name: Download Powerline fontconfig
+   get_url:
+      url: https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
+      dest: /home/{{ ansible_user_id }}/.config/fontconfig/fonts.conf/10-powerline-symbols.conf
+
+ - name: Setup zsh
+   template: src=.zshrc.j2 dest=/home/{{ ansible_user_id }}/.zshrc
+      owner={{ ansible_user_id }} group={{ ansible_user_id }} mode=0644
