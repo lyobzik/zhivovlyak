@@ -1,0 +1,11 @@
+---
+ - name: Install ssh package
+   apt: name={{item}} state=present #update_cache=yes
+   with_items:
+    - ssh
+
+ - name: Ssh initial setup
+   template: src=sshd_config.j2 dest=/etc/ssh/sshd_config 
+      owner=root group=root mode=0644
+      validate='sshd -T -f %s'
+   notify: Restart ssh service
