@@ -1,0 +1,45 @@
+---
+ - name: Add docker group
+   sudo: true
+   group: name=docker state=present
+
+ - name: Debug
+   debug: msg="Var={{ ansible_user_id }}"
+
+ - name: Var Debug
+   debug: var=ansible_user_id
+
+ - name: Add user to docker group
+   sudo: true
+   user: name={{ ansible_user_id }} groups=docker
+      state=present append=yes
+
+ - name: Create directory for docker graph
+   sudo: true
+   file: path=/home/docker state=directory
+      owner=root group=docker mode=0701
+
+ - name: Install docker prerequirements
+   sudo: true
+   apt: name={{item}} state=present update_cache=yes
+   with_items:
+    - curl
+
+ - name: Download docker installer
+   sudo: true
+   shell: curl -fsSL -o /tmp/docker-installer.sh https://get.docker.com/
+      creates=/tmp/docker-installer.sh
+# TODO: use get_url instead of curl after fixing https://github.com/ansible/ansible/issues/12161
+#   get_url:
+#      url=https://get.docker.com/
+#      dest=/tmp/docker-installer.sh mode=a+rwx
+
+ - name: Run docker installer
+   sudo: true
+   script: /tmp/docker-installer.sh
+
+ - name: Set up docker
+   sudo: true
+   template: src=docker.j2 dest=/etc/default/docker
+      owner=root group=root mode=0644
+   notify: Restart docker service
