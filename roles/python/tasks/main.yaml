@@ -1,0 +1,13 @@
+---
+ - name: Install packages
+   sudo: true
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+   with_items:
+    - python
+    - virtualenvwrapper
+
+ - name: Set up virtual environments
+   sudo: false
+   lineinfile: dest='{{ ansible_user_dir}}/.common_shrc'
+      line='export WORKON_HOME=$HOME/.virtualenvs && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh'
+      state=present create=yes mode=0640
