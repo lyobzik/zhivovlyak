@@ -12,6 +12,7 @@
     - git
     - python-pip
     - fontconfig
+    - python-setuptools
 
  - name: Download oh-my-zsh installer
    get_url:
