@@ -7,3 +7,9 @@
 
  - name: Git initial setup
    template: src=.gitconfig.j2 dest=/home/{{ ansible_user_id }}/.gitconfig
+
+ - name: Add git extension commands
+   copy: src={{ item }} dest=/home/{{ ansible_user_id }}/.local/bin/{{ item }}
+      mode=0740
+   with_items:
+    - git-extract

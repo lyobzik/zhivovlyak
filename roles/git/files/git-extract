@@ -1,0 +1,68 @@
+#!/bin/sh
+
+parse_args() {
+  getopt --test >/dev/null
+  if [ ${?} -ne 4 ]; then
+    echo "Cannot parse arguments: usupported version of getopt" 1>&2
+    exit 1
+  fi
+
+  short_options=p:r:
+  long_options=path:,result:
+  args=`getopt -o ${short_options} -l ${long_options} -n "${0}" -- "${@}"`
+  if [ ${?} -ne 0 ]; then
+    echo "Cannot parse arguments" 1>&2
+    exit 2
+  fi
+
+  eval set -- "${args}"
+  while true; do
+    case "${1}" in
+      -p|--path)
+        path="${2}"
+        shift 2
+        ;;
+      -r|--result)
+        result="${2}"
+        shift 2
+        ;;
+      --)
+        break
+        ;;
+    esac
+  done
+
+  if [ -z "${path}" ]; then
+    echo "Path is required"
+    exit 11
+  fi
+  if [ -z "${result}" ]; then
+    echo "Result is required"
+    exit 12
+  fi
+}
+
+generate_uuid() {
+  if which uuidgen >/dev/null; then
+    uuidgen
+  else
+    cat /dev/urandom | tr -cd 'a-z0-9' | head -c32
+  fi
+}
+
+git_extract() {
+  local prefix="${1}"
+  local extracted_branch="${3}"
+
+  git subtree split -P "${prefix}" -b "${extracted_branch}" --ignore-joins
+}
+
+main() {
+  parse_args "${@}"
+  extracted_branch="extracted-`generate_uuid`"
+  git_extract "${path}" "${result}" "${extracted_branch}"
+  git push "${result}" +"${extracted_branch}":master
+  git branch -D "${extracted_branch}"
+}
+
+main "${@}"
