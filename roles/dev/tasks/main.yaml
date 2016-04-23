@@ -3,6 +3,8 @@
    apt: name={{item}} state=present update_cache=no
    with_items:
     - build-essential
+    - automake
+    - autoconf
     - psmisc
     - git
     - git-gui
