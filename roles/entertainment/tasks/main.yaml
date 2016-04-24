@@ -1,0 +1,31 @@
+---
+ # Нужно сначала установить из пакета, а только затем при необходимости добавить репозиторий
+ - name: Add key for yandex-browser repository
+   apt_key:
+      url='http://repo.yandex.ru/yandex-browser/YANDEX-BROWSER-KEY.GPG'
+      state=present
+
+ - name: Add yandex-browser repository
+   apt_repository:
+      repo='deb http://repo.yandex.ru/yandex-browser/deb beta main'
+      state=present update_cache=yes
+
+ - name: Install latest version of yandex browser
+   apt: name=yandex-browser-beta state=present update_cache=no
+
+
+
+
+ - name: Add key for Opera repository
+   apt_key: url='http://deb.opera.com/archive.key' state=present
+
+ - name: Add Opera repository
+   apt_repository:
+      repo='deb http://deb.opera.com/opera-stable/ stable non-free'
+      state=present update_cache=yes
+
+ - name: Install latest version of stable Opera
+   apt: name=opera state=present update_cache=no
+
+
+

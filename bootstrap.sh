@@ -35,3 +35,5 @@ ansible-playbook -i inventory/localhost --extra-vars="roles=ssh" bootstrap.yml -
 ansible-playbook -i inventory/localhost --extra-vars="roles=zsh" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@
 ansible-playbook -i inventory/localhost --extra-vars="roles=docker" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@
 ansible-playbook -i inventory/localhost --extra-vars="roles=python" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@
+
+ansible-playbook -i inventory/localhost --extra-vars="roles=entertainment" bootstrap.yaml -K -vvvv $@
