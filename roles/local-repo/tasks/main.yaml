@@ -1,0 +1,23 @@
+---
+ - include_vars: main.yml
+
+ - name: Install required packages
+   sudo: true
+   apt: name=dpkg-dev state=latest update_cache=yes
+
+ - name: Create directories for local repository
+   file: path={{ item }} state=directory
+   with_items:
+      - '{{ repo_path }}'
+      - '{{ repo_path }}/repo'
+
+ - name: Add script to update local repository
+   template: src=update.sh.j2 dest={{ repo_path }}/update.sh mode=u+rwx
+
+ - name: Update local repository content
+   script: "'{{ repo_path }}/update.sh' creates='{{ repo_path }}/repo/Packages.gz'"
+
+ - name: Add local repository
+   sudo: true
+   apt_repository:
+      repo='deb file:{{ repo_path }}/repo ./' state=present update_cache=yes

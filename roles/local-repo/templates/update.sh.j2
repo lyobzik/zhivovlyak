@@ -1,0 +1,5 @@
+#!/bin/bash
+
+pushd {{ repo_path }}/repo >/dev/null
+dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+popd >/dev/null
