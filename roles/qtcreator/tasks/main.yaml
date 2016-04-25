@@ -1,0 +1,15 @@
+---
+# Detect lastest version of QtCreator
+ - name: Download QtCreator
+   sudo: false
+   get_url:
+      url=http://download.qt.io/official_releases/qtcreator/3.6/3.6.0/qt-creator-opensource-linux-x86_64-3.6.0.run
+      dest=~/Downloads/qt-creator-installer.run
+
+ - name: Change mode of downloaded file
+   sudo: false
+   file: path=~/Downloads/qt-creator-installer.run mode=a+x
+
+ - name: Run QtCreator Installer
+   sudo: false
+   shell: ~/Downloads/qt-creator-installer.run

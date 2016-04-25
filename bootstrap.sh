@@ -37,3 +37,4 @@ ansible-playbook -i inventory/localhost --extra-vars="roles=docker" --extra-vars
 ansible-playbook -i inventory/localhost --extra-vars="roles=python" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@
 
 ansible-playbook -i inventory/localhost --extra-vars="roles=entertainment" bootstrap.yaml -K -vvvv $@
+ansible-playbook -i inventory/localhost --extra-vars="roles=qtcreator" bootstrap.yaml -K -vvvv $@
