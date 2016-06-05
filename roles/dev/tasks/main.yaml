@@ -11,4 +11,5 @@
     - gitk
     - gitg
     - valgrind
+    - wireshark
 
