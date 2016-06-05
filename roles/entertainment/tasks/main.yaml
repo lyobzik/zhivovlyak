@@ -27,5 +27,6 @@
  - name: Install latest version of stable Opera
    apt: name=opera state=present update_cache=no
 
-
+ - name: Install fb2- and epub-reader
+   apt: name=fbreader state=present update_cache=no
 
