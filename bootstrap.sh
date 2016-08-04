@@ -27,6 +27,7 @@ sudo apt-get install ansible
 ansible-playbook -i inventory/localhost --extra-vars="roles=ansible" bootstrap.yml -K -vvvv $@
 ansible-playbook -i inventory/localhost --extra-vars="roles=common" bootstrap.yml -K -vvvv $@
 ansible-playbook -i inventory/localhost --extra-vars="roles=dev" bootstrap.yml -K -vvvv $@
+ansible-playbook -i inventory/localhost --extra-vars="roles=scala" bootstrap.yml -K -vvvv $@
 
 ansible-playbook -i inventory/localhost --extra-vars="roles=git" --extra-vars="enable_sudo=false" git.yml -K -vvvv $@
 #ansible-playbook -i inventory/localhost --extra-vars="roles=ssh" -e "allow_root_login=true" bootstrap.yml -K -vvvv $@

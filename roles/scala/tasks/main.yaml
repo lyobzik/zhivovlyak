@@ -1,0 +1,16 @@
+---
+ - name: Add java repository
+   apt_repository: repo='ppa:webupd8team/java' state=present update_cache=yes
+
+ - name: Install requirements
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+   with_items:
+    - oracle-java8-installer
+    - oracle-java8-set-default
+
+ - name: Install scala packages
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+   with_items:
+    - scala
+    - sbt
+
