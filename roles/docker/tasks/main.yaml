@@ -3,12 +3,6 @@
    sudo: true
    group: name=docker state=present
 
- - name: Debug
-   debug: msg="Var={{ ansible_user_id }}"
-
- - name: Var Debug
-   debug: var=ansible_user_id
-
  - name: Add user to docker group
    sudo: true
    user: name={{ ansible_user_id }} groups=docker
@@ -19,9 +13,9 @@
    file: path=/home/docker state=directory
       owner=root group=docker mode=0701
 
- - name: Install docker prerequirements
+ - name: Install docker requirements
    sudo: true
-   apt: name={{item}} state=present update_cache=yes
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
    with_items:
     - curl
 
