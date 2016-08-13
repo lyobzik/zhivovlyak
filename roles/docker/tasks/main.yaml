@@ -33,6 +33,7 @@
 #   get_url:
 #      url=https://get.docker.com/
 #      dest=/tmp/docker-installer.sh mode=a+rwx
+   # TODO: add docker plugin to oh-my-zsh
 
  - name: Run docker installer
    sudo: true
@@ -43,3 +44,9 @@
    template: src=docker.j2 dest=/etc/default/docker
       owner=root group=root mode=0644
    notify: Restart docker service
+
+ - name: Download docker compose
+   sudo: false
+   get_url: url=https://github.com/docker/compose/releases/download/1.8.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+      dest={{ ansible_env.HOME }}/.local/bin/docker-compose mode=0750
+   # TODO: add docker-compose to oh-my-zsh
