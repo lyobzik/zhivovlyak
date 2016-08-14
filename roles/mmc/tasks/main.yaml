@@ -1,0 +1,14 @@
+---
+ - name: Add script to fix kernel bug
+   sudo: false
+   copy: src={{ item }} dest={{ ansible_env.HOME }}/.local/bin/{{ item }}
+      mode=0740
+   with_items:
+    - mmc-bug-fix
+
+ - name: Install packages for exFAT
+   sudo: true
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=600
+   with_items:
+    - exfat-fuse
+    - exfat-utils

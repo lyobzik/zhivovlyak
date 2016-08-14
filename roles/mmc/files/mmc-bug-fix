@@ -1,0 +1,16 @@
+#!/bin/sh
+
+main() {
+  # Temporary workaround from
+  # http://superuser.com/questions/1079742/cant-create-a-partition-table-on-micro-sd-card
+  # https://m.reddit.com/r/archlinux/comments/4lmyev/issue_with_integrated_sd_card_reader_on_acer_c710/
+  sudo -- bash -c '\
+    rmmod sdhci sdhci_pci sdhci_acpi; \
+    modprobe sdhci debug_quirks2="0x10000" && \
+    modprobe sdhci_pci'
+  # For permanent fix add string 'options sdhci debug_quirks2="0x10000"' to any
+  # config file at /etc/modprobe.d/
+  # echo 'options sdhci debug_quirks2="0x10000"' > /etc/modprobe.d/mmc_bug_fix.conf
+}
+
+main
