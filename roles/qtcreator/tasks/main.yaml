@@ -1,4 +1,7 @@
 ---
+ - name: Ensure existence of Downloads directory
+   file: path=~/Downloads state=directory
+
 # Detect lastest version of QtCreator
  - name: Download QtCreator
    sudo: false
