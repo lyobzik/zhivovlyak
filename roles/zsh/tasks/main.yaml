@@ -5,7 +5,7 @@
    with_items:
     - zsh
 
- - name: Install oh-my-zsh prerequirements
+ - name: Install oh-my-zsh requirements
    sudo: true
    apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
    with_items:
