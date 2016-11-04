@@ -13,3 +13,4 @@
     - gdebi
     - software-properties-common
     - tree
+    - apt-transport-https
