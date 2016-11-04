@@ -14,3 +14,8 @@
     - software-properties-common
     - tree
     - apt-transport-https
+
+ - name: Create useful directories
+   file: path={{ item }} state=directory
+   with_items:
+    - ~/.local/bin
