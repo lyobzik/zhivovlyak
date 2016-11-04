@@ -42,5 +42,5 @@
  - name: Download docker compose
    sudo: false
    get_url: url=https://github.com/docker/compose/releases/download/1.8.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
-      dest={{ ansible_env.HOME }}/.local/bin/docker-compose mode=0750
+      dest=~/.local/bin/docker-compose mode=0750
    # TODO: add docker-compose to oh-my-zsh

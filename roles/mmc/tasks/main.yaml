@@ -1,7 +1,7 @@
 ---
  - name: Add script to fix kernel bug
    sudo: false
-   copy: src={{ item }} dest={{ ansible_env.HOME }}/.local/bin/{{ item }}
+   copy: src={{ item }} dest=~/.local/bin/{{ item }}
       mode=0740
    with_items:
     - mmc-bug-fix
