@@ -1,13 +1,13 @@
 ---
  - name: Install zsh package
    sudo: true
-   apt: name={{item}} state=present update_cache=yes
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
    with_items:
     - zsh
 
  - name: Install oh-my-zsh prerequirements
    sudo: true
-   apt: name={{item}} state=present update_cache=yes
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
    with_items:
     - git
     - python-pip

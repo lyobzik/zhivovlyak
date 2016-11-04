@@ -3,7 +3,7 @@
 
  - name: Install required packages
    sudo: true
-   apt: name=dpkg-dev state=latest update_cache=yes
+   apt: name=dpkg-dev state=latest update_cache=yes cache_valid_time=3600
 
  - name: Create directories for local repository
    file: path={{ item }} state=directory
