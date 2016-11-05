@@ -23,7 +23,7 @@ check_requirements
 if ! command -v ansible-playbook >/dev/null 2>&1; then
   sudo apt-get update
   sudo apt-get dist-upgrade --yes --force-yes
-  sudo apt-get install ansible
+  sudo apt-get install --yes --force-yes -- ansible
 fi
 
 ansible-playbook -i inventory/localhost --extra-vars="roles=ansible" bootstrap.yml -K -vvvv $@
