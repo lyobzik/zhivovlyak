@@ -29,3 +29,4 @@ main() {
 }
 
 main
+./zhivovlyak/bootstrap.sh

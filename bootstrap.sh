@@ -1,5 +1,7 @@
 #!/bin/bash
 
+readonly work_dir=$(readlink -e $(dirname ${0}))
+
 panic() {
   if [[ ${1+isset} = isset ]]; then
     echo ${1} 1>&2
@@ -17,6 +19,8 @@ check_requirements() {
     panic "Detected unsupported OS: ${ID} <${PRETTY_NAME}>"
   fi
 }
+
+pushd ${work_dir} >/dev/null
 
 check_requirements
 
@@ -44,3 +48,5 @@ ansible-playbook -i inventory/localhost --extra-vars="roles=qtcreator" bootstrap
 ansible-playbook -i inventory/localhost --extra-vars="roles=local-repo" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@
 
 ansible-playbook -i inventory/localhost --extra-vars="roles=mmc" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@
+
+popd >/dev/null
