@@ -8,6 +8,6 @@
 
  - name: Set up virtual environments
    sudo: false
-   lineinfile: dest='{{ ansible_user_dir}}/.common_shrc'
+   lineinfile: dest='~/.common_shrc'
       line='export WORKON_HOME=$HOME/.virtualenvs && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh'
       state=present create=yes mode=0640

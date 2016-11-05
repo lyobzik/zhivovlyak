@@ -1,5 +1,26 @@
 #!/bin/bash
 
-pushd {{ repo_path }}/repo >/dev/null
-dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+get_md5sum() {
+  md5sum ${1} | cut --delimiter ' ' --fields 1
+}
+
+get_size() {
+  wc -c ${1} | cut --delimiter ' ' --fields 1
+}
+
+pushd {{ abs_repo_path }}/repo >/dev/null
+
+# Generate Packages.gz file
+dpkg-scanpackages . /dev/null | tee Packages | gzip -9c > Packages.gz
+chmod a+r Packages Packages.gz
+
+# Generate Release file
+cat > Release <<__END__
+Description: Local repository
+Components: .
+MD5Sum:
+ $(get_md5sum Packages) $(get_size Packages) Packages
+ $(get_md5sum Packages.gz) $(get_size Packages.gz) Packages.gz
+__END__
+
 popd >/dev/null

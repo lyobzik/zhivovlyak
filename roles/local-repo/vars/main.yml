@@ -1,2 +1,2 @@
 ---
- repo_path: /home/{{ ansible_user_id }}/mydebs
+ repo_path: /srv/mydebs

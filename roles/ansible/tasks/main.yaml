@@ -6,4 +6,4 @@
    apt_repository: repo='ppa:ansible/ansible' state=present update_cache=yes
 
  - name: Install latest ansible version
-   apt: name=ansible state=latest update_cache=no
+   apt: name=ansible state=latest update_cache=yes cache_valid_time=3600

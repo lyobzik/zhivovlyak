@@ -11,7 +11,7 @@
       state=present update_cache=yes
 
  - name: Install latest version of yandex browser
-   apt: name=yandex-browser-beta state=present update_cache=no
+   apt: name=yandex-browser-beta state=present update_cache=yes cache_valid_time=3600
 
 
 
@@ -25,8 +25,8 @@
       state=present update_cache=yes
 
  - name: Install latest version of stable Opera
-   apt: name=opera state=present update_cache=no
+   apt: name=opera state=present update_cache=yes cache_valid_time=3600
 
  - name: Install fb2- and epub-reader
-   apt: name=fbreader state=present update_cache=no
+   apt: name=fbreader state=present update_cache=yes cache_valid_time=3600
 

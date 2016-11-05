@@ -1,18 +1,18 @@
 ---
  - name: Install git package
    sudo: true
-   apt: name={{item}} state=present update_cache=yes
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
    with_items:
     - git
 
  - name: Git initial setup
-   template: src=.{{ item }}.j2 dest=/home/{{ ansible_user_id }}/.{{ item }}
+   template: src=.{{ item }}.j2 dest=~/.{{ item }}
    with_items:
     - gitconfig
     - gitexcludes
 
  - name: Add git extension commands
-   copy: src={{ item }} dest=/home/{{ ansible_user_id }}/.local/bin/{{ item }}
+   copy: src={{ item }} dest=~/.local/bin/{{ item }}
       mode=0740
    with_items:
     - git-extract

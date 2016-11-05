@@ -1,13 +1,13 @@
 ---
  - name: Install zsh package
    sudo: true
-   apt: name={{item}} state=present update_cache=yes
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
    with_items:
     - zsh
 
- - name: Install oh-my-zsh prerequirements
+ - name: Install oh-my-zsh requirements
    sudo: true
-   apt: name={{item}} state=present update_cache=yes
+   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
    with_items:
     - git
     - python-pip
@@ -24,7 +24,7 @@
       regexp='TEST_CURRENT_SHELL=\$\(expr' line='TEST_CURRENT_SHELL="zsh"'
 
  - name: Run oh-my-zsh installer
-   script: /tmp/oh-my-zsh-installer.sh creates=/home/{{ ansible_user_id }}/.oh-my-zsh
+   script: /tmp/oh-my-zsh-installer.sh creates=~/.oh-my-zsh
 
  - name: Change user shell
    sudo: true
@@ -38,24 +38,24 @@
  - name: Create Powerline font's directories
    file: path={{ item }} state=directory
    with_items:
-    - /home/{{ ansible_user_id }}/.local/share/fonts
-    - /home/{{ ansible_user_id }}/.config/fontconfig/fonts.conf/
+    - ~/.local/share/fonts
+    - ~/.config/fontconfig/fonts.conf/
 
  - name: Download Powerline symbols
    get_url:
       url: https://github.com/Lokaltog/powerline/raw/develop/font/PowerlineSymbols.otf
-      dest: /home/{{ ansible_user_id }}/.local/share/fonts/PowerlineSymbols.otf
+      dest: ~/.local/share/fonts/PowerlineSymbols.otf
 
  - name: Update system's font cache
-   shell: fc-cache -fv /home/{{ ansible_user_id }}/.local/share/fonts
+   shell: fc-cache -fv ~/.local/share/fonts
    args:
       executable: /bin/zsh
 
  - name: Download Powerline fontconfig
    get_url:
       url: https://github.com/Lokaltog/powerline/raw/develop/font/10-powerline-symbols.conf
-      dest: /home/{{ ansible_user_id }}/.config/fontconfig/fonts.conf/10-powerline-symbols.conf
+      dest: ~/.config/fontconfig/fonts.conf/10-powerline-symbols.conf
 
  - name: Setup zsh
-   template: src=.zshrc.j2 dest=/home/{{ ansible_user_id }}/.zshrc
+   template: src=.zshrc.j2 dest=~/.zshrc
       owner={{ ansible_user_id }} group={{ ansible_user_id }} mode=0644
