@@ -3,10 +3,16 @@
 
  - name: Install required packages
    sudo: true
-   apt: name=dpkg-dev state=latest update_cache=yes cache_valid_time=3600
+   apt:
+     name: dpkg-dev
+     state: latest
+     update_cache: yes
+     cache_valid_time: 3600
 
  - name: Create directories for local repository
-   file: path={{ item }} state=directory
+   file:
+     path: '{{ item }}'
+     state: directory
    with_items:
       - '{{ repo_path }}'
       - '{{ repo_path }}/repo'
@@ -20,13 +26,19 @@
       abs_repo_path: '{{ abs_repo_path_cmd.stdout }}'
 
  - name: Add script to update local repository
-   template: src=update.sh.j2 dest={{ repo_path }}/update.sh mode=u+rwx
+   template:
+     src: update.sh.j2
+     dest: '{{ repo_path }}/update.sh'
+     mode: u+rwx
 
  - name: Update local repository content
    shell: '{{ repo_path }}/update.sh'
-   args: creates='{{ repo_path }}/repo/Packages.gz'
+   args:
+     creates: '{{ repo_path }}/repo/Packages.gz'
 
  - name: Add local repository
    sudo: true
    apt_repository:
-      repo='deb [trusted=yes] file://{{ abs_repo_path }}/repo ./' state=present update_cache=yes
+     repo: 'deb [trusted=yes] file://{{ abs_repo_path }}/repo ./'
+     state: present
+     update_cache: yes

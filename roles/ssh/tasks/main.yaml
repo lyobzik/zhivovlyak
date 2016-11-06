@@ -1,6 +1,10 @@
 ---
  - name: Install ssh package
-   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+   apt:
+     name: '{{ item }}'
+     state: present
+     update_cache: yes
+     cache_valid_time: 3600
    with_items:
     - ssh
    notify: Restart ssh service
@@ -8,7 +12,11 @@
  - meta: flush_handlers
 
  - name: Ssh initial setup
-   template: src=sshd_config.j2 dest=/etc/ssh/sshd_config 
-      owner=root group=root mode=0644
-      validate='sshd -T -f %s'
+   template:
+      src: sshd_config.j2
+      dest: /etc/ssh/sshd_config
+      owner: root
+      group: root
+      mode: 0644
+      validate: 'sshd -T -f %s'
    notify: Restart ssh service

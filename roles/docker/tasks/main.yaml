@@ -1,32 +1,47 @@
 ---
  - name: Add docker group
    sudo: true
-   group: name=docker state=present
+   group:
+     name: docker
+     state: present
 
  - name: Add user to docker group
    sudo: true
-   user: name={{ ansible_user_id }} groups=docker
-      state=present append=yes
+   user:
+     name: '{{ ansible_user_id }}'
+     groups: docker
+     state: present
+     append: yes
 
  - name: Create directory for docker graph
    sudo: true
-   file: path=/home/docker state=directory
-      owner=root group=docker mode=0701
+   file:
+     path: /home/docker
+     state: directory
+     owner: root
+     group: docker
+     mode: 0701
 
  - name: Install docker requirements
    sudo: true
-   apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+   apt:
+     name: '{{ item }}'
+     state: present
+     update_cache: yes
+     cache_valid_time: 3600
    with_items:
     - curl
 
  - name: Download docker installer
    sudo: true
    shell: curl -fsSL -o /tmp/docker-installer.sh https://get.docker.com/
-      creates=/tmp/docker-installer.sh
+   args:
+      creates: /tmp/docker-installer.sh
 # TODO: use get_url instead of curl after fixing https://github.com/ansible/ansible/issues/12161
 #   get_url:
-#      url=https://get.docker.com/
-#      dest=/tmp/docker-installer.sh mode=a+rwx
+#      url: 'https://get.docker.com/'
+#      dest: /tmp/docker-installer.sh
+#      mode: a+rwx
    # TODO: add docker plugin to oh-my-zsh
 
  - name: Run docker installer
@@ -35,12 +50,18 @@
 
  - name: Set up docker
    sudo: true
-   template: src=docker.j2 dest=/etc/default/docker
-      owner=root group=root mode=0644
+   template:
+     src: docker.j2
+     dest: /etc/default/docker
+     owner: root
+     group: root
+     mode: 0644
    notify: Restart docker service
 
  - name: Download docker compose
    sudo: false
-   get_url: url=https://github.com/docker/compose/releases/download/1.8.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
-      dest=~/.local/bin/docker-compose mode=0750
+   get_url:
+     url: 'https://github.com/docker/compose/releases/download/1.8.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}'
+     dest: ~/.local/bin/docker-compose
+     mode: 0750
    # TODO: add docker-compose to oh-my-zsh
