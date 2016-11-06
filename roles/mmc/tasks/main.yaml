@@ -1,14 +1,20 @@
 ---
  - name: Add script to fix kernel bug
    sudo: false
-   copy: src={{ item }} dest=~/.local/bin/{{ item }}
-      mode=0740
+   copy:
+      src: '{{ item }}'
+      dest: '~/.local/bin/{{ item }}'
+      mode: 0740
    with_items:
     - mmc-bug-fix
 
  - name: Install packages for exFAT
    sudo: true
-   apt: name={{item}} state=present update_cache=yes cache_valid_time=600
+   apt:
+     name: '{{ item }}'
+     state: present
+     update_cache: yes
+     cache_valid_time: 3600
    with_items:
     - exfat-fuse
     - exfat-utils
