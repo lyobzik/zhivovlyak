@@ -1,5 +1,7 @@
 #!/bin/bash
 
+readonly work_dir=$(readlink -e $(dirname ${0}))
+
 panic() {
   if [[ ${1+isset} = isset ]]; then
     echo ${1} 1>&2
@@ -18,11 +20,15 @@ check_requirements() {
   fi
 }
 
+pushd ${work_dir} >/dev/null
+
 check_requirements
 
-sudo apt-get update
-sudo apt-get dist-upgrade --yes --force-yes
-sudo apt-get install ansible
+if ! command -v ansible-playbook >/dev/null 2>&1; then
+  sudo apt-get update
+  sudo apt-get dist-upgrade --yes --force-yes
+  sudo apt-get install --yes --force-yes -- ansible
+fi
 
 ansible-playbook -i inventory/localhost --extra-vars="roles=ansible" bootstrap.yml -K -vvvv $@
 ansible-playbook -i inventory/localhost --extra-vars="roles=common" bootstrap.yml -K -vvvv $@
@@ -42,3 +48,5 @@ ansible-playbook -i inventory/localhost --extra-vars="roles=qtcreator" bootstrap
 ansible-playbook -i inventory/localhost --extra-vars="roles=local-repo" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@
 
 ansible-playbook -i inventory/localhost --extra-vars="roles=mmc" --extra-vars="enable_sudo=false" bootstrap.yml -K -vvvv $@
+
+popd >/dev/null
