@@ -1,6 +1,18 @@
 ---
 - hosts: targets
   gather_facts: yes
+  vars_prompt:
+  - name: 'git_user_name'
+    prompt: 'What is git user.name?'
+    private: no
+  - name: 'git_user_email'
+    prompt: 'What is git user.email?'
+    private: no
+  tasks:
+    - set_fact:
+        git_user_name: '{{ git_user_name }}'
+    - set_fact:
+        git_user_email: '{{ git_user_email }}'
 
 - hosts: targets
   gather_facts: no
@@ -17,23 +29,10 @@
   gather_facts: no
   become: no
   roles:
+  - git
   - zsh
   - docker
   - python
   - local-repo
   - mmc
   - qtcreator
-
-- hosts: targets
-  become: no
-  roles:
-  - git
-  vars_prompt:
-  - name: 'user_name'
-    prompt: 'What is git user.name?'
-    private: no
-    when: git_user_name is undefined
-  - name: 'user_email'
-    prompt: 'What is git user.email?'
-    private: no
-    when: git_user_email is undefined
