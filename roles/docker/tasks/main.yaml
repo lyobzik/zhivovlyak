@@ -58,6 +58,13 @@
      mode: 0644
    notify: Restart docker service
 
+ - name: Create local bin directory
+   sudo: false
+   file:
+     path: ~/.local/bin/
+     state : directory
+     mode: 0750
+
  - name: Download docker compose
    sudo: false
    get_url:
