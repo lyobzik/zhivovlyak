@@ -1,5 +1,39 @@
 ---
- - hosts: targets
-   sudo: "{{ enable_sudo | default(true) }}"
-   roles:
-    - "{{ roles }}"
+- hosts: targets
+  gather_facts: yes
+
+- hosts: targets
+  gather_facts: no
+  become: yes
+  roles:
+  - ansible
+  - common
+  - dev
+  - scala
+  - ssh
+  - entertainment
+  - qtcreator
+
+- hosts: targets
+  gather_facts: no
+  become: no
+  roles:
+  - zsh
+  - docker
+  - python
+  - local-repo
+  - mmc
+
+- hosts: targets
+  become: no
+  roles:
+  - git
+  vars_prompt:
+  - name: 'user_name'
+    prompt: 'What is git user.name?'
+    private: no
+    when: git_user_name is undefined
+  - name: 'user_email'
+    prompt: 'What is git user.email?'
+    private: no
+    when: git_user_email is undefined
