@@ -1,6 +1,6 @@
 ---
  - name: Install git package
-   sudo: true
+   become: yes
    apt:
      name: '{{ item }}'
      state: present

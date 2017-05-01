@@ -1,6 +1,6 @@
 ---
  - name: Add script to fix kernel bug
-   sudo: false
+   become: no
    copy:
       src: '{{ item }}'
       dest: '~/.local/bin/{{ item }}'
@@ -9,7 +9,7 @@
     - mmc-bug-fix
 
  - name: Install packages for exFAT
-   sudo: true
+   become: yes
    apt:
      name: '{{ item }}'
      state: present

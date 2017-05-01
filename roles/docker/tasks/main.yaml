@@ -1,12 +1,12 @@
 ---
  - name: Add docker group
-   sudo: true
+   become: yes
    group:
      name: docker
      state: present
 
  - name: Add user to docker group
-   sudo: true
+   become: yes
    user:
      name: '{{ ansible_user_id }}'
      groups: docker
@@ -14,7 +14,7 @@
      append: yes
 
  - name: Create directory for docker graph
-   sudo: true
+   become: yes
    file:
      path: /home/docker
      state: directory
@@ -23,7 +23,7 @@
      mode: 0701
 
  - name: Install docker requirements
-   sudo: true
+   become: yes
    apt:
      name: '{{ item }}'
      state: present
@@ -33,7 +33,7 @@
     - curl
 
  - name: Download docker installer
-   sudo: true
+   become: yes
    shell: curl -fsSL -o /tmp/docker-installer.sh https://get.docker.com/
    args:
       creates: /tmp/docker-installer.sh
@@ -45,11 +45,11 @@
    # TODO: add docker plugin to oh-my-zsh
 
  - name: Run docker installer
-   sudo: true
+   become: yes
    script: /tmp/docker-installer.sh
 
  - name: Set up docker
-   sudo: true
+   become: yes
    template:
      src: docker.j2
      dest: /etc/default/docker
@@ -59,14 +59,14 @@
    notify: Restart docker service
 
  - name: Create local bin directory
-   sudo: false
+   become: no
    file:
      path: ~/.local/bin/
      state : directory
      mode: 0750
 
  - name: Download docker compose
-   sudo: false
+   become: no
    get_url:
      url: 'https://github.com/docker/compose/releases/download/1.8.0/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}'
      dest: ~/.local/bin/docker-compose

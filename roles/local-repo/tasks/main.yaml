@@ -2,7 +2,7 @@
  - include_vars: main.yml
 
  - name: Install required packages
-   sudo: true
+   become: yes
    apt:
      name: dpkg-dev
      state: latest
@@ -37,7 +37,7 @@
      creates: '{{ repo_path }}/repo/Packages.gz'
 
  - name: Add local repository
-   sudo: true
+   become: yes
    apt_repository:
      repo: 'deb [trusted=yes] file://{{ abs_repo_path }}/repo ./'
      state: present

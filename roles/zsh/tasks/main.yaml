@@ -1,6 +1,6 @@
 ---
  - name: Install zsh package
-   sudo: true
+   become: yes
    apt:
      name: '{{ item }}'
      state: present
@@ -10,7 +10,7 @@
     - zsh
 
  - name: Install oh-my-zsh requirements
-   sudo: true
+   become: yes
    apt:
      name: '{{ item }}'
      state: present
@@ -41,7 +41,7 @@
      creates: ~/.oh-my-zsh
 
  - name: Change user shell
-   sudo: true
+   become: yes
    user:
      name: '{{ ansible_user_id }}'
      shell: /usr/bin/zsh

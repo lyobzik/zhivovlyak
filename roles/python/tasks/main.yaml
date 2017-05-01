@@ -1,6 +1,6 @@
 ---
  - name: Install packages
-   sudo: true
+   become: yes
    apt:
      name: '{{ item }}'
      state: present
@@ -11,7 +11,7 @@
     - virtualenvwrapper
 
  - name: Set up virtual environments
-   sudo: false
+   become: no
    lineinfile:
      dest: '~/.common_shrc'
      line: 'export WORKON_HOME=$HOME/.virtualenvs && source /usr/share/virtualenvwrapper/virtualenvwrapper.sh'
